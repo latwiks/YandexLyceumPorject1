@@ -44,15 +44,15 @@ class MainWindow(QMainWindow):
         self.results_button.clicked.connect(self.show_results)
         self.results_window = None
 
-    def show_results(self):
+    def show_results(self):  # посмотреть результаты (кнопка, где вход и регистрация)
         self.results_window = ResultsInterface()
         self.results_window.show()
 
-    def login(self):
+    def login(self):  # кнопка входа
         self.login_window = LoginWindow(self)
         self.login_window.show()
 
-    def register(self):
+    def register(self):  # кнопка регистрации
         self.register_window = RegisterWindow()
         self.register_window.show()
 
@@ -60,7 +60,6 @@ class MainWindow(QMainWindow):
 class LoginWindow(QWidget):
     def __init__(self, main_window):
         super().__init__()
-        self.setWindowIcon(QIcon(""))
         self.setFixedSize(300, 100)
         self.main_window = main_window
         self.setWindowTitle("Вход")
@@ -82,7 +81,7 @@ class LoginWindow(QWidget):
 
         self.setLayout(self.layout)
 
-    def authenticate(self):
+    def authenticate(self):  # вход
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
         username = self.username_input.text().strip().lower()
@@ -96,7 +95,7 @@ class LoginWindow(QWidget):
             user_id = user[0]
             author_id = user_id
             self.window = None
-
+            # собсна вход по ролям
             if role_id == ROLE_ID_TEACHER:
                 self.window = TeacherInterface(user_id, author_id)
             elif role_id == ROLE_ID_STUDENT:
@@ -116,7 +115,7 @@ class LoginWindow(QWidget):
             QMessageBox.warning(self, "Вход", "Неправильное имя или пароль!")
 
 
-class RegisterWindow(QWidget):
+class RegisterWindow(QWidget):  # регистрация
     def __init__(self):
         super().__init__()
 
@@ -153,7 +152,7 @@ class RegisterWindow(QWidget):
 
         self.setLayout(self.layout)
 
-    def register(self):
+    def register(self):  # регистрация
         try:
             conn = sqlite3.connect('test.db')
             c = conn.cursor()
@@ -161,6 +160,7 @@ class RegisterWindow(QWidget):
             username = self.username_input.text().strip().lower()
             password = self.password_input.text().strip()
             repeat_password = self.password_input_2.text().strip()
+            # эхх.. ошибочки ошибочки...
             if len(name.split()) < 2:
                 raise LengthError("Введите ФИО полностью (можно без отчества)!")
             if len(username) < 3:
@@ -219,6 +219,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
+    # стилёк
     style = """
     QMainWindow {
         background-color:rgb(82, 82, 82);

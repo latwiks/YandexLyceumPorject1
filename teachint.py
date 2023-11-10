@@ -87,12 +87,12 @@ class TeacherInterface(QWidget):
         self.layout.addWidget(self.delete_profile_button)
         self.fetch_tests()
 
-    def change_name(self):
+    def change_name(self):  # изменить свое фио
         self.change_name_dialog = ChangeNameInterface(self.user_id, self.role, self.label2)
         if self.change_name_dialog.exec():
             QMessageBox.information(self, "Успех", "Имя успешно изменено!")
 
-    def save_as_csv(self):
+    def save_as_csv(self):  # сохранить результаты теста в csv
         if self.results_table.rowCount() > 0:
             path, _ = QFileDialog.getSaveFileName(self, 'Save File', '', 'CSV(*.csv)')
             if path:
@@ -112,12 +112,12 @@ class TeacherInterface(QWidget):
         else:
             QMessageBox.warning(self, "Ошибка", "Таблица пуста.")
 
-    def change_password(self):
+    def change_password(self):  # сменить пароль
         self.change_password_dialog = ChangePasswordInterface(self.user_id)
         if self.change_password_dialog.exec():
             QMessageBox.information(self, "Успех", "Пароль изменён успешно!")
 
-    def fetch_results(self):
+    def fetch_results(self):  # перезагрузить результаты теста
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
         try:
@@ -154,7 +154,7 @@ class TeacherInterface(QWidget):
         except Exception as e:
             print(f"Ошибка: {e}")  # debug print
 
-    def delete_me(self):
+    def delete_me(self):  # удалить профиль
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
         reply = QMessageBox.question(self, 'Подтвердить удаление',
@@ -194,7 +194,7 @@ class TeacherInterface(QWidget):
                 else:
                     QMessageBox.critical(self, 'Ошибка', 'Пароль неверный')
 
-    def edit_test(self):
+    def edit_test(self):  # изменить выбранный тест
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
         test_name = self.test_list.currentText()
@@ -209,7 +209,7 @@ class TeacherInterface(QWidget):
         self.edit_test_widget.show()
         conn.close()
 
-    def fetch_tests(self):
+    def fetch_tests(self):  # обновить список тестов
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
         c.execute(f"SELECT test_name FROM tests WHERE author_id={self.user_id}")
@@ -221,7 +221,7 @@ class TeacherInterface(QWidget):
             self.test_list.addItem(test_name[0])
         conn.close()
 
-    def test_statistics(self):
+    def test_statistics(self):  # средняя статистика тестов
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
         test_name = self.test_list.currentText()
@@ -247,7 +247,7 @@ class TeacherInterface(QWidget):
         else:
             QMessageBox.warning(self, "Статистика", "Ошибка.")
 
-    def add_question(self):
+    def add_question(self):  # добавить вопрос к тесту
         self.test_name_input.setEnabled(False)
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
@@ -284,7 +284,7 @@ class TeacherInterface(QWidget):
             except sqlite3.IntegrityError:
                 QMessageBox.warning(self, "Добавить вопрос", "Ошибка!")
 
-    def finish_test(self):
+    def finish_test(self):  # завершить работу с этим тестом
         self.test_name_input.clear()
         self.test_name_input.setEnabled(True)
         self.question_input.clear()

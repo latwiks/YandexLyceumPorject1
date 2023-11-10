@@ -10,6 +10,7 @@ from changepass import ChangePasswordInterface
 from hash_password import hash_password
 from errors import *
 
+# айди не менять
 ROLE_ID_ADMIN = 2
 ROLE_ID_TEACHER = 3
 ROLE_ID_STUDENT = 4
@@ -111,7 +112,9 @@ class AdminInterface(QWidget):
 
         self.setLayout(self.layout)
 
-    def change_name_to_user(self):
+    # Фановые штучки
+
+    def change_name_to_user(self):  # изменить фио пользователю от имени админа
         if not self.user_list.currentText():
             QMessageBox.warning(self, "Изменить имя пользователю", "Ничего не выбрано.")
             return
@@ -125,7 +128,7 @@ class AdminInterface(QWidget):
         if self.change_name_dialog_2.exec():
             QMessageBox.information(self, "Успех", "Имя изменено успешно!")
 
-    def change_pass_to_user(self):
+    def change_pass_to_user(self):  # изменить пароль пользователю от имени админа
         if not self.user_list.currentText():
             QMessageBox.warning(self, "Изменить пароль пользователю", "Ничего не выбрано.")
             return
@@ -139,7 +142,7 @@ class AdminInterface(QWidget):
         if self.change_password_dialog_2.exec():
             QMessageBox.information(self, "Успех", "Пароль изменён успешно!")
 
-    def change_login_to_user(self):
+    def change_login_to_user(self):  # изменить логин пользователя от имени админа
         if not self.user_list.currentText():
             QMessageBox.warning(self, "Изменить логин пользователю", "Ничего не выбрано.")
             return
@@ -154,17 +157,19 @@ class AdminInterface(QWidget):
             QMessageBox.information(self, "Успех", "логин изменён успешно!")
         self.fetch_users()
 
-    def change_name(self):
+    # Полезности
+
+    def change_name(self):  # изменение своего фио
         self.change_name_dialog = ChangeNameInterface(self.user_id, self.role, self.label2)
         if self.change_name_dialog.exec():
             QMessageBox.information(self, "Успех", "Имя успешно изменено!")
 
-    def change_password(self):
+    def change_password(self):  # изменение своего пароля
         self.change_password_dialog = ChangePasswordInterface(self.user_id)
         if self.change_password_dialog.exec():
             QMessageBox.information(self, "Успех", "Пароль изменён успешно!")
 
-    def fetch_test(self):
+    def fetch_test(self):  # кнопка для обновления списка тестов
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
         c.execute("SELECT test_name FROM tests")
@@ -174,15 +179,7 @@ class AdminInterface(QWidget):
             self.test_list.addItem(test[0])
         conn.close()
 
-    def delete_test(self):
-        conn = sqlite3.connect('test.db')
-        c = conn.cursor()
-        test_name = self.test_list.currentText()
-        c.execute("DELETE FROM tests WHERE test_name=?", (test_name,))
-        conn.commit()
-        conn.close()
-
-    def edit_test(self):
+    def edit_test(self):  # кнопка для изменения выбранного теста
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
         test_name = self.test_list.currentText()
@@ -197,7 +194,7 @@ class AdminInterface(QWidget):
         self.edit_test_widget.show()
         conn.close()
 
-    def fetch_users(self):
+    def fetch_users(self):  # кнопка для обновления списка пользователей
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
         c.execute("SELECT username FROM users")
@@ -207,7 +204,7 @@ class AdminInterface(QWidget):
             self.user_list.addItem(user[0])
         conn.close()
 
-    def fetch_roles(self):
+    def fetch_roles(self):  # кнопка для обновления списка ролей (хз, зачем ее добавил.. но пусть будет, вдруг сделаю добавление ролей админом в будущем :))
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
         c.execute("SELECT role_name FROM roles")
@@ -217,7 +214,7 @@ class AdminInterface(QWidget):
             self.role_list.addItem(role[0])
         conn.close()
 
-    def assign_role(self):
+    def assign_role(self):  # Назначить роль
         if not self.user_list.currentText():
             QMessageBox.warning(self, "Ошибка", "Поле пользователя не должно быть пустым")
             return
@@ -239,7 +236,7 @@ class AdminInterface(QWidget):
         QMessageBox.information(self, "Успех", f"Вы успешно назначили роль {role} пользователю {user}")
         conn.close()
 
-    def remove_user(self):
+    def remove_user(self):  # удаление пользователя от админа (не удаляются тесты и результаты, вдруг разбанят)
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
         user = self.user_list.currentText()
@@ -258,7 +255,7 @@ class AdminInterface(QWidget):
         else:
             QMessageBox.warning(self, "Удалить пользователя", "Поле пользователя не должно быть пустым!")
 
-    def delete_test(self):
+    def delete_test(self):  # удаление выбранного теста
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
         delete_test = self.test_list.currentText().strip()
@@ -274,7 +271,7 @@ class AdminInterface(QWidget):
         except sqlite3.IntegrityError:
             QMessageBox.warning(self, "Удалить тест", "Не удалось удалить тест!")
 
-    def delete_me(self):
+    def delete_me(self):  # удаление себя
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
         reply = QMessageBox.question(self, 'Подтвердить удаление',
@@ -300,7 +297,7 @@ class AdminInterface(QWidget):
                 else:
                     QMessageBox.critical(self, 'Ошибка', 'Пароль неверный')
 
-    def add_user(self):
+    def add_user(self):  # добавление пользователя от имени админа
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
         username = self.new_user_input.text().strip()

@@ -12,7 +12,7 @@ from hash_password import hash_password
 from changepass import ChangePasswordInterface
 
 
-class StudentInterface(QWidget):
+class StudentInterface(QWidget):  # ученик (вход через main.py)
     def __init__(self, user_id):
         super().__init__()
         self.setWindowTitle('Ученик')
@@ -78,12 +78,12 @@ class StudentInterface(QWidget):
         self.layout.addWidget(self.delete_profile_button)
         self.fetch_results()
 
-    def change_name(self):
+    def change_name(self):  # сменить имя
         self.change_name_dialog = ChangeNameInterface(self.user_id, self.role, self.label2)
         if self.change_name_dialog.exec():
             QMessageBox.information(self, "Успех", "Имя успешно изменено!")
 
-    def save_to_csv(self):
+    def save_to_csv(self):  # сохранить свои результаты в файлик csv
         if self.results_table.rowCount() > 0:
             filename = QFileDialog.getSaveFileName(self, "Сохранить файл", "", "CSV (*.csv)")[0]
             if filename:
@@ -106,7 +106,7 @@ class StudentInterface(QWidget):
         else:
             QMessageBox.warning(self, "Ошибка", "Таблица пуста.")
 
-    def delete_me(self):
+    def delete_me(self):  # удалить профиль
         reply = QMessageBox.question(self, 'Подтвердить удаление',
                                      'Вы уверены, что хотите удалить свой профиль?', QMessageBox.Yes | QMessageBox.No)
 
@@ -121,6 +121,7 @@ class StudentInterface(QWidget):
                 if correct_password and correct_password[0] == hash_password(password):
                     try:
                         c.execute("DELETE FROM users WHERE id=?", (self.user_id,))
+                        c.execute("delete from results where user_id=?", (self.user_id,))
                         conn.commit()
                         QMessageBox.information(self, 'Удалено',
                                                 'Вы успешно удалили свой профиль')
@@ -132,12 +133,12 @@ class StudentInterface(QWidget):
                 else:
                     QMessageBox.critical(self, 'Ошибка', 'Пароль неверный')
 
-    def change_password(self):
+    def change_password(self):  # сменить пароль
         self.change_password_dialog = ChangePasswordInterface(self.user_id)
         if self.change_password_dialog.exec():
             QMessageBox.information(self, "Успех", "Пароль успешно изменён!")
 
-    def fetch_results(self):
+    def fetch_results(self):  # перезагрузить результаты
         try:
             conn = sqlite3.connect('test.db')
             c = conn.cursor()
@@ -163,7 +164,7 @@ class StudentInterface(QWidget):
         except Exception as e:
             print(f"Не удалось получить результаты: {e}")
 
-    def take_test(self):
+    def take_test(self):  # взять тест
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
         test_name = self.test_list.currentText().strip()
@@ -191,7 +192,7 @@ class StudentInterface(QWidget):
         self.finish_test_button.show()
         conn.close()
 
-    def finish_test(self):
+    def finish_test(self):  # закончить тест
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
         correct_answers = sum([q.correct_answer == q.answer_input.text() for q in self.question_widgets])
@@ -245,6 +246,7 @@ class QuestionWidget(QWidget):
         self.correct_answer = None
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
+        # пояснялка к низу: возможно в будущем появятся варианты ответов, поэтому пока что запихнул is_correct = 1 везде
         c.execute("SELECT content FROM answers WHERE question_id=? AND is_correct=1", (question_id,))
         answer = c.fetchone()
         if answer:

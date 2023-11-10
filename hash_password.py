@@ -1,4 +1,4 @@
-import hashlib
+import hashlib  # ф-ия для хэширования пароликов
 
 
 def hash_password(password):

@@ -6,7 +6,7 @@ conn = sqlite3.connect('test.db')
 c = conn.cursor()
 
 
-class ResultsInterface(QWidget):
+class ResultsInterface(QWidget):  # окно результатов (через main)
     def __init__(self):
         super().__init__()
 
@@ -24,6 +24,8 @@ class ResultsInterface(QWidget):
         self.save_results_button = QPushButton("Сохранить результаты")
         self.save_results_button.clicked.connect(self.save_results)
         self.layout.addWidget(self.save_results_button)
+
+        self.refresh_results()
 
         self.setLayout(self.layout)
 
@@ -52,7 +54,7 @@ class ResultsInterface(QWidget):
         except sqlite3.Error as e:
             print("Не удалось выгрузить данные из бд: ", e)
 
-    def save_results(self):
+    def save_results(self):  # сохранение результатов в файлик
         if self.results_table.rowCount() > 0:
             try:
                 path, _ = QFileDialog.getSaveFileName(

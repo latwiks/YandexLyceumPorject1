@@ -16,3 +16,4 @@
 2. Перейдите в папку проекта: `cd YandexLyceumPorject1`
 3. Установите `pip install -r requirements.txt`
 4. Запустите файйл main.py `python main.py`
+## На все вопросы отвечу, не стесняйтесь задавать!

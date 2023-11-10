@@ -1,4 +1,4 @@
-class Error(Exception):
+class Error(Exception):  # ошибочки для паролей и логинов
     pass
 
 

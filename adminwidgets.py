@@ -7,7 +7,7 @@ from errors import *
 from hash_password import hash_password
 
 
-class EditTestWidget(QWidget):
+class EditTestWidget(QWidget):  # виджет для изменения выбранного теста (в adminint.py)
     def __init__(self, test_name, test_id):
         super().__init__()
 
@@ -45,7 +45,7 @@ class EditTestWidget(QWidget):
         self.new_question_button.clicked.connect(self.add_question)
         self.layout.addWidget(self.new_question_button)
 
-    def add_question(self):
+    def add_question(self):  # добавить вопрос
         new_question_text = self.new_question_input.text().strip()
         new_answer_text = self.new_answer_input.text().strip()
 
@@ -64,7 +64,7 @@ class EditTestWidget(QWidget):
             QMessageBox.information(self, "Добавить вопрос", f"Вопрос к тесту '{self.test_name}' добавлен успешно!")
             conn.close()
 
-    def save(self):
+    def save(self):  # сохранить тест
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
         new_test_name = self.test_name_input.text().strip()
@@ -80,7 +80,7 @@ class EditTestWidget(QWidget):
         conn.close()
 
 
-class QuestionEditWidget(QWidget):
+class QuestionEditWidget(QWidget):  # виджет для вопросов
     def __init__(self, question_id, content, parent=None):
         super().__init__(parent)
 
@@ -104,7 +104,7 @@ class QuestionEditWidget(QWidget):
 
         self.setLayout(self.layout)
 
-    def delete(self):
+    def delete(self):  # удаление вопроса
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
         c.execute("DELETE FROM questions WHERE id=?", (self.question_id,))
@@ -113,7 +113,7 @@ class QuestionEditWidget(QWidget):
         conn.close()
         self.setParent(None)
 
-    def save(self):
+    def save(self):  # сохранение вопроса
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
         new_content = self.question_input.text().strip()
@@ -134,7 +134,7 @@ class AnswerEditWidget(QWidget):
         self.layout.addWidget(self.answer_input)
         self.setLayout(self.layout)
 
-    def save(self):
+    def save(self):  # сохранение ответа
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
         new_content = self.answer_input.text().strip()
@@ -142,7 +142,7 @@ class AnswerEditWidget(QWidget):
         conn.close()
 
 
-class ChangePasswordToUser(QDialog):
+class ChangePasswordToUser(QDialog):  # изменение пароля пользователю от имени админа
     def __init__(self, login):
         super().__init__()
         self.setFixedSize(200, 100)
@@ -160,7 +160,7 @@ class ChangePasswordToUser(QDialog):
         self.layout.addWidget(self.confirm_button)
         self.setLayout(self.layout)
 
-    def change_password(self):
+    def change_password(self):  # собственно функция для изменения
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
         new_password_input = self.new_password_input.text()
@@ -195,7 +195,8 @@ class ChangePasswordToUser(QDialog):
         except sqlite3.IntegrityError:
             QMessageBox.warning(self, "Ошибка", "Произошла ошибка при смене пароля!")
 
-class ChangeNameToUser(QDialog):
+
+class ChangeNameToUser(QDialog):  # изменить фио пользователю от имени админа
     def __init__(self, login):
         super().__init__()
         self.setWindowTitle(f"Сменить имя пользователю {login}")
@@ -216,7 +217,7 @@ class ChangeNameToUser(QDialog):
 
         self.setLayout(self.layout)
 
-    def change_name(self):
+    def change_name(self):  # ф-ия для этого
         new_name = self.new_name.text().strip()
         conn = sqlite3.connect("test.db")
         c = conn.cursor()
@@ -231,7 +232,7 @@ class ChangeNameToUser(QDialog):
         conn.close()
 
 
-class ChangeLoginToUser(QDialog):
+class ChangeLoginToUser(QDialog):  # изменить логин юзеру от имени админа
     def __init__(self, login):
         super().__init__()
         self.setWindowTitle(f"Сменить логин пользователю {login}")
@@ -251,7 +252,7 @@ class ChangeLoginToUser(QDialog):
 
         self.setLayout(self.layout)
 
-    def change_name(self):
+    def change_name(self): # ф-ия
         new_name = self.new_name.text().strip()
         conn = sqlite3.connect("test.db")
         c = conn.cursor()

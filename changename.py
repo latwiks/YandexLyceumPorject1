@@ -6,7 +6,7 @@ conn = sqlite3.connect('test.db')
 c = conn.cursor()
 
 
-class ChangeNameInterface(QDialog):
+class ChangeNameInterface(QDialog):  # сменить фио любому от имени того "любого"
     def __init__(self, user_id, role, label):
         super().__init__()
         self.role = role
@@ -33,7 +33,7 @@ class ChangeNameInterface(QDialog):
 
         self.setLayout(self.layout)
 
-    def change_name(self):
+    def change_name(self):  # ф-ия
         new_name = self.new_name.text().strip()
         password = self.password.text()
 

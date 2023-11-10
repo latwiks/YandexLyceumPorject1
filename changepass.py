@@ -8,7 +8,7 @@ conn = sqlite3.connect('test.db')
 c = conn.cursor()
 
 
-class ChangePasswordInterface(QDialog):
+class ChangePasswordInterface(QDialog):  # изменение пароля от имени пользователя
     def __init__(self, user_id):
         super().__init__()
         self.setWindowTitle('Сменить пароль')
@@ -36,7 +36,7 @@ class ChangePasswordInterface(QDialog):
 
         self.setLayout(self.layout)
 
-    def change_password(self):
+    def change_password(self):  # ф-ия
         old_password_input = self.old_password.text()
         new_password_input = self.new_password.text()
         confirm_new_password_input = self.confirm_new_password.text()
