@@ -32,6 +32,7 @@ class TeacherInterface(QWidget):
         self.label2 = QLabel(self.role + self.name)
         self.layout.addWidget(self.label2)
         self.test_name_input = QLineEdit()
+        self.test_name_input.setPlaceholderText("Тест 1")
         self.layout.addRow("Имя теста:", self.test_name_input)
 
         self.add_question_button = QPushButton("Добавить вопрос")
@@ -39,9 +40,11 @@ class TeacherInterface(QWidget):
         self.layout.addWidget(self.add_question_button)
 
         self.question_input = QLineEdit()
+        self.question_input.setPlaceholderText("Как меня зовут?")
         self.layout.addRow("Вопрос:", self.question_input)
 
         self.answer_input = QLineEdit()
+        self.answer_input.setPlaceholderText(f"{self.name}")
         self.layout.addRow("Ответ:", self.answer_input)
 
         self.finish_test_button = QPushButton("Завершить работу с тестом")

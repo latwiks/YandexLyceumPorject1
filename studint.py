@@ -195,7 +195,7 @@ class StudentInterface(QWidget):  # ученик (вход через main.py)
     def finish_test(self):  # закончить тест
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
-        correct_answers = sum([q.correct_answer == q.answer_input.text() for q in self.question_widgets])
+        correct_answers = sum([q.correct_answer.lower() == q.answer_input.text().lower() for q in self.question_widgets])
         total_questions = len(self.question_widgets)
         incorrect_answers = total_questions - correct_answers
 
@@ -216,6 +216,7 @@ class StudentInterface(QWidget):  # ученик (вход через main.py)
             QMessageBox.information(self, "Рекорд",
                                     f"Ты ответил правильно на {correct_answers} из {total_questions} вопросов!\n"
                                     f"Твой процент успеха: {round(score, 2)}%")
+            self.fetch_results()
             for widget in self.question_widgets:
                 self.layout.removeWidget(widget)
                 widget.setParent(None)
