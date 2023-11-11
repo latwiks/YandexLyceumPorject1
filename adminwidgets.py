@@ -252,7 +252,7 @@ class ChangeLoginToUser(QDialog):  # изменить логин юзеру от
 
         self.setLayout(self.layout)
 
-    def change_name(self): # ф-ия
+    def change_name(self):  # ф-ия
         new_name = self.new_name.text().strip()
         conn = sqlite3.connect("test.db")
         c = conn.cursor()
