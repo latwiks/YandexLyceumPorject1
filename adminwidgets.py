@@ -57,8 +57,8 @@ class EditTestWidget(QWidget):  # виджет для изменения выб�
             c.execute("INSERT INTO questions (content, test_id) VALUES (?, ?)", (new_question_text, self.test_id))
             question_id = c.lastrowid
 
-            c.execute("INSERT INTO answers (content, question_id) VALUES (?, ?)",
-                      (new_answer_text, question_id))
+            c.execute("INSERT INTO answers (content, question_id, is_correct) VALUES (?, ?, ?)",
+                      (new_answer_text, question_id, 1))
             conn.commit()
 
             QMessageBox.information(self, "Добавить вопрос", f"Вопрос к тесту '{self.test_name}' добавлен успешно!")
